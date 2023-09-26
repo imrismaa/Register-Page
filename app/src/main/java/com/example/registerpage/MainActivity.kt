@@ -1,8 +1,16 @@
 package com.example.registerpage
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.service.autofill.OnClickAction
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import com.example.registerpage.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,10 +26,23 @@ class MainActivity : AppCompatActivity() {
 
         with(binding){
             btnRegister.setOnClickListener {
-                val intentToSecondActivity = Intent(this@MainActivity, SecondActivity::class.java)
-                val username = editTxtUsername.text.toString()
-                intentToSecondActivity.putExtra(EXTRA_NAME, username)
-                startActivity(intentToSecondActivity)
+                if (editTxtUsername.text.isEmpty() || editTxtEmail.text.isEmpty() || editTxtPhone.text.isEmpty() || editTxtPassword.text.isEmpty()){
+                    val warning = "Please fill out the blank."
+                    Toast.makeText(this@MainActivity, warning, Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    if (checkbox.isChecked){
+                        val intentToSecondActivity =
+                            Intent(this@MainActivity, SecondActivity::class.java)
+                        val username = editTxtUsername.text.toString()
+                        intentToSecondActivity.putExtra(EXTRA_NAME, username)
+                        startActivity(intentToSecondActivity)
+                    }
+                    else{
+                        val termsAndCondition = "Please read and agree to our Terms and Conditions before proceeding."
+                        Toast.makeText(this@MainActivity, termsAndCondition, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
